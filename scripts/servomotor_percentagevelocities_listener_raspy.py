@@ -18,9 +18,6 @@ import tf2_ros as tf2
 
 from diffbot_msgs.msg import WheelsCmdStamped
 
-servoPINLeft = 18
-servoPINRight = 17
-
 ###### main loop  ######
 # ServoMotor 3606HB: 0.16 s (4.8V) ¦ 0.14 s (6.0V)
 # Using hardware:            PWM
@@ -76,7 +73,7 @@ class TwistToMotors():
         time.sleep(1)
         self.kit.continuous_servo[0].throttle = 0
         self.kit.continuous_servo[1].throttle = 0
-        time.sleep(1)        
+        time.sleep(1)
         """
     
         self.rate = rospy.get_param("~rate", 50)
@@ -154,8 +151,8 @@ class TwistToMotors():
         self.ticks_since_target = self.timeout_ticks
 
         self.pi = pigpio.pi()
-        self.pi.set_servo_pulsewidth(servoPINLeft, 0)
-        self.pi.set_servo_pulsewidth(servoPINRight, 0)
+        # self.pi.set_servo_pulsewidth(servoPINLeft, 0)
+        # self.pi.set_servo_pulsewidth(servoPINRight, 0)
     
         ###### main loop  ######
         while not rospy.is_shutdown():
@@ -177,8 +174,14 @@ class TwistToMotors():
       if (self.duty_left != 0):
         self.duty_left = self.duty_left
 
-      self.kit.continuous_servo[0].throttle = self.duty_left / 20
-      self.kit.continuous_servo[1].throttle = self.duty_right / 20
+      throttle_left = self.duty_left
+      throttle_right = self.duty_right
+
+      # throttle_left = 0.4
+      # throttle_right = 0.4
+
+      self.kit.continuous_servo[0].throttle = throttle_left / 20
+      self.kit.continuous_servo[1].throttle = throttle_right / 20
  
     def wheelCmdLeftVelocityCallback(self, cmd_msg):
 
