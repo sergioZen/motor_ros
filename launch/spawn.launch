@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <rosparam file="$(find motor_ros2)/config/mobile_base_controller.yaml" command="load" />
+
+    <node name="SARA_controller_manager" pkg="controller_manager" type="spawner"
+          respawn="false" output="screen" args="mobile_base_controller" />
+          
+</launch>

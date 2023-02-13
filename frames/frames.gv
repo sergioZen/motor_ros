@@ -1,0 +1,17 @@
+digraph G {
+"base_link" -> "left_wheel"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 20.569\nBuffer length: 4.959\nMost recent transform: 491.803\nOldest transform: 486.844\n"];
+"base_footprint" -> "base_link"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "right_wheel"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 20.569\nBuffer length: 4.959\nMost recent transform: 491.803\nOldest transform: 486.844\n"];
+"odom" -> "base_footprint"[label=" Broadcaster: /gazebo\nAverage rate: 20.216\nBuffer length: 4.897\nMost recent transform: 491.79\nOldest transform: 486.893\n"];
+"chassis" -> "camera_link"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "chassis"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"camera_link" -> "camera_link_optical"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"chassis" -> "caster_wheel"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"chassis" -> "face_link"[label=" Broadcaster: /robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_footprint" -> "scan_link"[label=" Broadcaster: /base_to_laser_broadcaster\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"map" -> "odom"[label=" Broadcaster: /map_to_odom\nAverage rate: 30.425\nBuffer length: 4.963\nMost recent transform: 491.854\nOldest transform: 486.891\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 491.827"[ shape=plaintext ] ;
+}->"map";
+}
