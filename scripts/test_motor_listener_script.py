@@ -1,11 +1,9 @@
-#!/usr/bin/env python3
-
-import rospy
-from std_msgs.msg import String
+#! /usr/bin/env python
 import RPi.GPIO as GPIO
-
+import os
+import time
 #Define nombre de las entradas del puente H
-ena = 18
+ena = 18			
 in1 = 23
 in2 = 24
 
@@ -29,67 +27,66 @@ pwm_a.start(0)
 pwm_b.start(0)
 # funciones de sentido de giro de los motores
 def  Giro_Favor_Reloj_MotorA():
-   GPIO.output(in1,False)
-   GPIO.output(in2,True)
+	GPIO.output(in1,False)
+	GPIO.output(in2,10)
 
 def Giro_Contra_Reloj_MotorA():
-   GPIO.output(in1,True)
-   GPIO.output(in2,False)
+	GPIO.output(in1,20)
+	GPIO.output(in2,False)
 
 def  Giro_Favor_Reloj_MotorB():
-   GPIO.output(in3,False)
-   GPIO.output(in4,True)
+	GPIO.output(in3,False)
+	GPIO.output(in4,True)
 
 def Giro_Contra_Reloj_MotorB():
-   GPIO.output(in3,True)
-   GPIO.output(in4,False)
+	GPIO.output(in3,True)
+	GPIO.output(in4,False)
+#limpia la pantalla
+os.system('clear')
+print("Elija motor[A-B], el sentido [F-R] y la velocidad [0-100]")
+print("ejemplo 'AF50' MOTOR A Foward a 50%. de velocidad")
+print("CTRL-C para salir")
+print
+try:
+	while True:
+		cmd = input("inserte el comando ")
+		cmd = cmd.lower()
+		motor = cmd[0]
+		direccion =cmd[1]
+		velocidad =cmd[2:5]
 
-heading = 360
+		if motor == "a":
+			if direccion == "f":
+				Giro_Favor_Reloj_MotorA()
+				print("motor A, CW, vel="+velocidad)
+			elif direccion== "r":
+				Giro_Contra_Reloj_MotorA()
+				print("motor A, CCW, vel="+velocidad)
+			else:
+				print("comando no reconocido")
+			pwm_a.ChangeDutyCycle(int(velocidad))
+			print
 
-def callback(data):
-   cmd = data.data.lower()
-   motor = cmd[0]
-   direccion =cmd[1]
-   velocidad =cmd[2:5]
-
-   if motor == "a":
-         if direccion == "f":
-                  Giro_Favor_Reloj_MotorA()
-                  print("motor A, CW, vel="+velocidad)
-         elif direccion== "r":
-                  Giro_Contra_Reloj_MotorA()
-                  print("motor A, CCW, vel="+velocidad)
-         else:
-                  print("comando no reconocido")
-         pwm_a.ChangeDutyCycle(int(velocidad))
-         print
-
-   elif motor == "b":
-         if direccion == "f":
-                  Giro_Favor_Reloj_MotorB()
-                  print("motor B, CW, vel="+velocidad)
-         elif direccion == "r":
-                  Giro_Contra_Reloj_MotorB()
-         else:
-                  print("comando no reconocido")
-         pwm_b.ChangeDutyCycle(int(velocidad))
-         print
-   else:
-         print
-         print("comando no reconocido")
-         print
-      
-   rospy.loginfo( 'heading %d', heading )
-   
-   #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
-
-def listener():
-
-   rospy.init_node('listener', anonymous=True)
-
-   rospy.Subscriber('direction', String, callback)
-
-   rospy.spin()
-
-if __name__ == '__main__':
-    listener()
+		elif motor == "b":
+			if direccion == "f":
+				Giro_Favor_Reloj_MotorB()
+				print("motor B, CW, vel="+velocidad)
+			elif direccion == "r":
+				Giro_Contra_Reloj_MotorB()
+			else:
+				print("comando no reconocido")
+			pwm_b.ChangeDutyCycle(int(velocidad))
+			print
+		else:
+			print
+			print("comando no reconocido")
+			print
+except KeyboardInterrupt:
+	pwm_a.stop()
+	pwm_b.stop()
+	GPIO.cleanup()
+	os.system('clear')
+	print
+	print("Programa Terminado por el usuario")
+	print
+	exit()

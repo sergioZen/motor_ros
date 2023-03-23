@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+   <node pkg="motor_ros_pi" name="test_motor_encoder_listene" type="test_motor_listener_script.py" output="screen"/> 
+
+</launch>
